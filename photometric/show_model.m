@@ -25,5 +25,19 @@ set(gca, 'XDir', 'reverse')
 set(gca, 'XTick', []);
 set(gca, 'YTick', []);
 set(gca, 'ZTick', []);
+
+
+%---Zelf toegevoegd
+%[U,V,W] = surfnorm(X,Y,height_map);
+stepsize = 15;
+height_map_2 = height_map(1:stepsize:end,1:stepsize:end);
+[U,V,W] = surfnorm(height_map_2);
+figure
+%quiver3(wid,hgt,height_map,U,V,W,0.5)
+%manier1
+%quiver3(height_map_2,U,V,W)
+%manier2?
+quiver3(1:stepsize:wid,1:stepsize:hgt,height_map_2,U,V,W)
+view(-35,45)
 end
 

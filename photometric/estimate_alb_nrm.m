@@ -8,7 +8,6 @@ function [ albedo, normal ] = estimate_alb_nrm( image_stack, scriptV, shadow_tri
 %   albedo : the surface albedo
 %   normal : the surface normal
 
-
 [h, w, ~] = size(image_stack);
 if nargin == 2
     shadow_trick = true;
@@ -30,6 +29,63 @@ normal = zeros(h, w, 3);
 %   normal at this point is g / |g|
 
 
+warning off
+shadow_trick = false;
+%Q1
+
+%Variable to indicate how many images to use
+stop = size(image_stack,3);
+%stop = 25;
+%scriptV = scriptV(1:stop,:);
+% for each point in the image array
+disp(size(image_stack))
+for x = 1:w
+    for y = 1:h
+        %stack image values into a vector i
+        i = image_stack(y,x,1:stop);
+        %construct the diagonal matrix scriptI
+        i = squeeze(i);
+        if shadow_trick
+            scriptI = diag(i);
+            %solve scriptI * scriptV * g = scriptI * i to obtain g for this point
+            g = linsolve(scriptI*scriptV,scriptI*i);
+        else
+            g = linsolve(scriptV,i);
+        end
+        albedo(y,x) = norm(g);
+        normal(y,x,:) = g./albedo(y,x);
+    end
+end
+%imwrite(albedo,"./Q1_images/25_albedo_25_nst.jpg")
+%imwrite(normal,"./Q1_images/25_normal_25_nst.jpg")
+figure(1)
+imshow(albedo)
+figure(2)
+imshow(normal)
+
+
+%Q2, same code as Q1, but with incremental loop
+%{
+for increment=[2:25]
+    stop = increment;
+    scriptv = scriptV(1:stop,:);
+    % for each point in the image array
+    for x = 1:w
+        for y = 1:h
+            %stack image values into a vector i
+            i = image_stack(x,y,1:stop);
+            %construct the diagonal matrix scriptI
+            i = squeeze(i);
+            scriptI = diag(i);
+            %solve scriptI * scriptV * g = scriptI * i to obtain g for this point
+            g = linsolve(scriptI*scriptv,scriptI*i);
+            albedo(x,y) = norm(g);
+            normal(x,y,:) = g./albedo(x,y);
+        end
+    end
+    imwrite(albedo,"./Q1_images/25_albedo_" + string(stop) + ".jpg")
+    imwrite(normal,"./Q1_images/25_normal_" + string(stop) + ".jpg")
+%}
 
 % =========================================================================
 

@@ -7,6 +7,7 @@ disp('Part 1: Photometric Stereo')
 % obtain many images in a fixed view under different illumination
 disp('Loading images...')
 image_dir = './SphereGray5/';   % TODO: get the path of the script
+%image_dir = './SphereGray25/';
 %image_ext = '*.png';
 
 [image_stack, scriptV] = load_syn_images(image_dir);
@@ -33,6 +34,14 @@ height_map = construct_surface( p, q );
 show_results(albedo, normals, SE);
 show_model(albedo, height_map);
 
+%From slack code
+%{
+figure
+[x_end, y_end, ~] = size(height_map);
+x = 1:16:x_end;
+y = 1:16:y_end;
+quiver3(y,x, height_map(1:16:end, 1:16:end), normals(1:16:end,1:16:end,1), normals(1:16:end,1:16:end,2), normals(1:16:end,1:16:end,3))
+%}
 
 %% Face
 [image_stack, scriptV] = load_face_images('./yaleB02/');
