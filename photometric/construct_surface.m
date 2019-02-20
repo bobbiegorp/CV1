@@ -15,7 +15,7 @@ end
 height_map_column = zeros(h, w);
 height_map_row = zeros(h, w);
 %path_type = "row";
-%path_type = 'average'
+path_type = 'average';
 
 switch path_type
     case 'column'

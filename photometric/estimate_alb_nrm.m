@@ -34,14 +34,18 @@ shadow_trick = false;
 %Q1
 
 %Variable to indicate how many images to use
+%size(image_stack)
+%size(image_stack(:,:,1))
+
 stop = size(image_stack,3);
-%stop = 25;
+%size(image_stack)
+%stop = 121;
 %scriptV = scriptV(1:stop,:);
 % for each point in the image array
-disp(size(image_stack))
 for x = 1:w
     for y = 1:h
         %stack image values into a vector i
+        %disp(size(image_stack(y,x,1)))
         i = image_stack(y,x,1:stop);
         %construct the diagonal matrix scriptI
         i = squeeze(i);
@@ -58,11 +62,10 @@ for x = 1:w
 end
 %imwrite(albedo,"./Q1_images/25_albedo_25_nst.jpg")
 %imwrite(normal,"./Q1_images/25_normal_25_nst.jpg")
-figure(1)
+figure
 imshow(albedo)
-figure(2)
+figure
 imshow(normal)
-
 
 %Q2, same code as Q1, but with incremental loop
 %{

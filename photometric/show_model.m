@@ -13,6 +13,7 @@ H = rot90(fliplr(height_map), 2);
 A = rot90(fliplr(albedo), 2);
 
 figure;
+%subplot(1,3,1)
 mesh(H, X, Y, A);
 axis equal;
 xlabel('Z')
@@ -29,15 +30,27 @@ set(gca, 'ZTick', []);
 
 %---Zelf toegevoegd
 %[U,V,W] = surfnorm(X,Y,height_map);
-stepsize = 15;
+stepsize = 18;
 height_map_2 = height_map(1:stepsize:end,1:stepsize:end);
 [U,V,W] = surfnorm(height_map_2);
+%subplot(1,3,2)
 figure
 %quiver3(wid,hgt,height_map,U,V,W,0.5)
 %manier1
 %quiver3(height_map_2,U,V,W)
 %manier2?
 quiver3(1:stepsize:wid,1:stepsize:hgt,height_map_2,U,V,W)
-view(-35,45)
+view(-3,45)
+%subplot(1,3,3)
+figure
+quiver3(1:stepsize:wid,1:stepsize:hgt,height_map_2,U,V,W)
+view(20,50)
+figure
+quiver3(1:stepsize:wid,1:stepsize:hgt,height_map_2,U,V,W)
+view(-10,70)
+
+%figure
+%quiver3(1:stepsize:wid,1:stepsize:hgt,height_map_2,U,V,W)
+%view(5,25)
 end
 

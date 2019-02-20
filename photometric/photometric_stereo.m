@@ -8,9 +8,12 @@ disp('Part 1: Photometric Stereo')
 disp('Loading images...')
 image_dir = './SphereGray5/';   % TODO: get the path of the script
 %image_dir = './SphereGray25/';
+%image_dir = "./MonkeyGray/";
+%image_dir = "./SphereColor/";
 %image_ext = '*.png';
 
-[image_stack, scriptV] = load_syn_images(image_dir);
+%[image_stack, scriptV] = load_syn_images(image_dir);
+[image_stack, scriptV] = load_syn_images(image_dir,3);
 [h, w, n] = size(image_stack);
 fprintf('Finish loading %d images.\n\n', n);
 
@@ -28,7 +31,7 @@ SE(SE <= threshold) = NaN; % for good visualization
 fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
 
 %% compute the surface height
-height_map = construct_surface( p, q );
+height_map = construct_surface( p, q);
 
 %% Display
 show_results(albedo, normals, SE);
