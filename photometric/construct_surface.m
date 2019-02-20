@@ -15,7 +15,7 @@ end
 height_map_column = zeros(h, w);
 height_map_row = zeros(h, w);
 %path_type = "row";
-path_type = 'average';
+%path_type = 'average';
 
 switch path_type
     case 'column'
@@ -89,18 +89,6 @@ switch path_type
         
         % =================================================================
 end
-
-
-%figure(2)
-%surf(height_map)
-%figure(3)
-%surf(q,p,height_map)
-%figure(4)
-%[x_end, y_end, ~] = size(height_map);
-%x = 1:16:x_end;
-%y = 1:16:y_end;
-%quiver3(x, y, height_map(1:16:end, 1:16:end), normals(1:16:end,1:16:end,1), normals(1:16:end,1:16:end,2), normals(1:16:end,1:16:end,3)) 
-
 
 
 end

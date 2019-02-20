@@ -30,13 +30,10 @@ normal = zeros(h, w, 3);
 
 
 warning off
-shadow_trick = false;
+%shadow_trick = false;
 %Q1
 
-%Variable to indicate how many images to use
-%size(image_stack)
-%size(image_stack(:,:,1))
-
+%Variable stop to indicate how many images to use
 stop = size(image_stack,3);
 %size(image_stack)
 %stop = 121;
@@ -62,10 +59,10 @@ for x = 1:w
 end
 %imwrite(albedo,"./Q1_images/25_albedo_25_nst.jpg")
 %imwrite(normal,"./Q1_images/25_normal_25_nst.jpg")
-figure
-imshow(albedo)
-figure
-imshow(normal)
+%figure
+%imshow(albedo)
+%figure
+%imshow(normal)
 
 %Q2, same code as Q1, but with incremental loop
 %{
