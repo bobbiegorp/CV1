@@ -1,4 +1,4 @@
-function [ myGabor ] = createGabor( sigma, theta, lambda, psi, gamma)
+function [ myGabor ] = createGabor( sigma, theta, lambda, psi, gamma )
 %CREATEGABOR Creates a complex valued Gabor filter.
 %   myGabor = createGabor( sigma, theta, lambda, psi, gamma ) generates
 %   Gabor kernels.  
@@ -66,11 +66,13 @@ myGabor_imaginary = gaussianEnv .* sinCarrier; % \\TODO: modulate gaussianEnv wi
 myGabor(:,:,1) = myGabor_real;
 myGabor(:,:,2) = myGabor_imaginary;
 
- %figure;
- %subplot(121), imshow(myGabor_real,[]);
- %title("Real - Sigma =  " + int2str(sigma) );
- %subplot(122), imshow(myGabor_imaginary, []);
- %title("Imaginary - Sigma = " + int2str(sigma));
+ figure;
+ subplot(121), imshow(myGabor_real,[]);
+ title("Real - Sigma =  " + int2str(sigma) );
+ subplot(122), imshow(myGabor_imaginary, []);
+ title("Imaginary - Sigma = " + int2str(sigma));
+ imwrite (figure, "./subplot.png");
+ 
  
 end
 
