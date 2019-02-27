@@ -213,22 +213,19 @@ features = reshape(features, numRows * numCols, []);
 %          for more information. \\
 
 %values = [];
-%for x = size(features,2)
-%    for y = size(features,1)
-%        values = [values features(y,x)];
-%    end
-%end
-%std_features = std(values);
-%mean_features = mean(values);
+#for x = size(features,2)
+#    for y = size(features,1)
+        values = [values features(y,x)];
+    end
+end
+std_features = std(values);
+mean_features = mean(values);
 
-%for x = size(features,2)
-%    for y = size(features,1)
-%        features(y,x) = (features(y,x) - mean_features)/std_features;
-%    end
-%end
-std_v = std(features);
-mean_v = mean(features);
-features = (features - mean_v) / std_v;
+for x = size(features,2)
+    for y = size(features,1)
+        features(y,x) = (features(y,x) - mean_features)/std_features;
+    end
+end
 %features = % \\ TODO: i)  Implement standardization on matrix called features. 
            %          ii) Return the standardized data matrix.
 
