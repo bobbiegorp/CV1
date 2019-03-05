@@ -1,7 +1,8 @@
 
 
 function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,threshold)
-    
+
+    original = imread(img);
     img = im2double(rgb2gray(imread(img)));
    
     %sigma = 1;
@@ -36,79 +37,24 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     figure(4), imshow(H, []), title("H");
     figure(5), imshow(I_x, []), title("I_x");
     figure(6), imshow(I_y, []), title("I_y");
+     
+    [r,c] = find(H > threshold);
     
+    figure(7),imshow(original);
     
-    y_range = size(H,1);
-    x_range = size(H,2);
-    r = [];
-    c = [];
+    %axis on
+    hold on
+   
+    %Plot all
+    plot(c,r, 'o', 'MarkerSize', 7,'LineWidth', 0.000001);
     
-    for y = y_range
-        for x = x_range
-            check_value = H(y,x);
-            dominate_neighbours = true; 
-            
-            if check_value <= threshold
-                continue
-            end
-            
-            % Center and step size to left, right, top, bottom,
-            % (window_size - 1) / 2
-            %Assuming uneven number n to center around pixel, and ignore
-            %outside images, zero padding effect
-            for window_step = 1:((window_size-1)/2)
-                x_plus_window = x + window_step;
-                y_plus_window = y + window_step;
-                x_min_window = x - window_step;
-                y_min_window = y - window_step;
-                top_left_diag = [y_min_window,x_min_window,];
-                top_right_diag = [y_min_window,x_plus_window];
-                bottom_right_diag = [y_plus_window,x_plus_window,];
-                bottom_left_diag = [y_plus_window,x_min_window];
-                
-                l = [ [y x_plus_window] [y_plus_window x] [y x_min_window],[y_min_window x],top_left_diag,top_right_diag,bottom_right_diag,bottom_left_diag];
-                
-                for index = 1:2:length(l) 
-                    window_y = l(index);
-                    window_x = l(index + 1);
-                    
-                    dominate_neighbours = valid_range_or_dominate(window_y ,window_x,x_range,y_range,H,check_value);
-                    if not(dominate_neighbours) 
-                        break
-                    end
-                end 
-                
-                if not (dominate_neighbours)
-                   break 
-                end
-               
-            end
-           
-            if dominate_neighbours
-                r = [r y];
-                c = [c x];
-            end
-            
-        end
-    end
-    
+    %Plot intervals to make it less cloudy for visualization
+    %plot(c,r,'o','MarkerIndices',1:7:length(r))
+
+    hold off
+   
     
 end
-
-
-function dominant = valid_range_or_dominate(y_window,x_window,x_max,y_max,H,check_value)
-
-    dominant = true;
-    
-    if x_window > 1 && x_window < x_max && y_window > 1 && y_window < y_max
-        other_value = H(y_window,x_window);
-        if check_value <= other_value
-            dominant = false;
-        end
-        
-    end
-
-end
-
-%[h,r,c] = harris_corner_detector("./person_toy/00000001.jpg",1,7,3,0.01)
-
+%harris_corner_detector("./person_toy/00000001.jpg",1,9,3,0.00013);
+%[h,r,c] = harris_corner_detector("./person_toy/00000001.jpg",1,9,3,0.00001);
+%harris_corner_detector("./person_toy/00000001.jpg",1,3,3,0.00013);
