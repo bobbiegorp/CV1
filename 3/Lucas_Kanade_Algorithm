@@ -1,0 +1,140 @@
+function [] = Lucas_Kanade(synth1, synth2, sphere1, sphere2)
+    image1 = imread(synth1); image2 = imread(synth2); image3 = imread(sphere1); image4 = imread(sphere2); 
+    
+    %Cropping synth images to 120x120
+    image1 = imcrop(image1,[5, 5, 119, 119]);
+    image2 = imcrop(image2,[5, 5, 119, 119]);
+
+    figure(2);
+    subplot 231, imshow(image1),title('synth1'), xlabel('A');
+    subplot 232, imshow(image2),title('synth2'), xlabel('B');
+    subplot 234,imshow(image3),title('sphere1'), xlabel('D');
+    subplot 235; imshow(image4),title('sphere2'), xlabel('E');
+    
+    %Resizing and converting to grayscale, otherwise the image would also consist of the 3 rgb
+    %values (200, 200 , 3)
+    im1t = im2double(image1);
+    im1 = imresize(im1t, 0.5); % downsize to half
+
+    im2 = imresize(im2double(image2), 0.5);
+   
+    im3t = im2double(rgb2gray(image3));
+    im3 = imresize(im3t, 0.5); 
+
+    im4 = imresize(im2double(rgb2gray(image4)), 0.5);
+    
+    %Inputting the size of 15x15 , using a width of half the window width,
+    %because we resized the image to 0.5 its size. So 
+    ww = 15;
+    w = round(ww/2);
+
+    %%%%%% Lucas Kanade Algortihm for the synth images  %%%%%%
+
+    % For each point, calculate I_x, I_y, I_t For all pixels around pixel p,
+    % the local image flow vector must satisfy. 
+    Ix_m = conv2(im1,[-1 1; -1 1], 'valid'); % partial on x
+    Iy_m = conv2(im1, [-1 -1; 1 1], 'valid'); % partial on y
+    It_m = conv2(im1, ones(2), 'valid') + conv2(im2, -ones(2), 'valid'); % partial on t
+    u = zeros(size(im1));
+    v = zeros(size(im2));
+
+    % within window ww * ww
+    for i = w+1:size(Ix_m,1)-w
+       for j = w+1:size(Ix_m,2)-w
+          Ix = Ix_m(i-w:i+w, j-w:j+w);
+          Iy = Iy_m(i-w:i+w, j-w:j+w);
+          It = It_m(i-w:i+w, j-w:j+w);
+
+          Ix = Ix(:);
+          Iy = Iy(:);
+          
+          %Equation (18) of assignment
+          A = [Ix Iy]; % get A here
+          b = -It(:); % get b here
+          
+          %Equation (20)of assignment
+          nu = ((A'*A)^(-1))*A'*b;% get velocity here
+
+          u(i,j)=nu(1);
+          v(i,j)=nu(2);
+       end;
+    end;
+
+
+    %Part 3 TO use the quiver plot function, it was found best to downsize the
+    %u and v (3.1) and then get the coordinate for u and v in the original
+    %frame (3.2)
+    % 3.1
+    u_deci = u(1:10:end, 1:10:end);
+    v_deci = v(1:10:end, 1:10:end);
+    % 3.2
+    [m, n] = size(im1t);
+    [X,Y] = meshgrid(1:n, 1:m);
+    X_deci = X(1:20:end, 1:20:end);
+    Y_deci = Y(1:20:end, 1:20:end);
+
+    figure(2);
+    subplot 233
+    imshow(image2),title('synth2 with Lucas-Kanade optical flow field')
+    xlabel('C');
+    hold on;
+    %Draw the velocity vectors on top of the image 
+    quiver(X_deci, Y_deci, u_deci,v_deci, 'y')
+
+
+    %%%%%% Lucas Kanade Algortihm for the sphere images  %%%%%%
+
+    % For each point, calculate I_x, I_y, I_t For all pixels around pixel p
+    Ix_m = conv2(im3,[-1 1; -1 1], 'valid'); % partial on x
+    Iy_m = conv2(im3, [-1 -1; 1 1], 'valid'); % partial on y
+    It_m = conv2(im3, ones(2), 'valid') + conv2(im4, -ones(2), 'valid'); % partial on t
+    u = zeros(size(im3));
+    v = zeros(size(im4));
+    
+    %Part 2: For each region computing A,transpose of A and b. Folowed by
+    %calculating optical flow. 
+    
+    % within window ww * ww
+    for i = w+1:size(Ix_m,1)-w
+       for j = w+1:size(Ix_m,2)-w
+          Ix = Ix_m(i-w:i+w, j-w:j+w);
+          Iy = Iy_m(i-w:i+w, j-w:j+w);
+          It = It_m(i-w:i+w, j-w:j+w);
+
+          Ix = Ix(:);
+          Iy = Iy(:);
+          
+          %Equation (18) of assignment
+          A = [Ix Iy]; % get A here
+          b = -It(:); % get b here
+          
+          %Equation (19)of assignment
+          nu = pinv(A)*b; % get velocity here
+          %Equation (20)of assignment
+          %nu = ((pinv(A)*A)^-1)* pinv(A)*b;% get velocity here
+          
+          u(i,j)=nu(1);
+          v(i,j)=nu(2);
+       end;
+    end;
+
+    %Part 3 To use the quiver plot function, it was found best to downsize the
+    %u and v (3.1) and then get the coordinate for u and v in the original
+    %frame (3.2)
+    % 3.1
+    u_deci = u(1:10:end, 1:10:end);
+    v_deci = v(1:10:end, 1:10:end);
+    % 3.2
+    [m, n] = size(im3t);
+    [X,Y] = meshgrid(1:n, 1:m);
+    X_deci = X(1:20:end, 1:20:end);
+    Y_deci = Y(1:20:end, 1:20:end);
+
+    figure(2);
+    subplot 236
+    imshow(image4), title('sphere2 with Lucas-Kanade optical flow field');
+    xlabel('F');
+    hold on
+    % Draw the velocity vectors on top of the image 
+    quiver(X_deci, Y_deci, u_deci,v_deci, 'r')
+end
