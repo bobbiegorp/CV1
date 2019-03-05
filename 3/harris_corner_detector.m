@@ -9,6 +9,7 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     %kernel_size = 7;
     
     %First order Gaussian filter approximation
+
     sobel_x = double([1 0 -1; 2 0 -2; 1 0 -1]);
     sobel_y = double([1  2 1; 0 0 0; -1 -2 -1]);
 
@@ -37,46 +38,50 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     figure(5), imshow(I_x, []), title("I_x");
     figure(6), imshow(I_y, []), title("I_y");
      
-    [r1,c1] = find(H > threshold);
-    lst = [];
-    range = floor(window_size/2);
-    
-    for n = 1 : length(r1)
-        i = r1(n);
-        j = c1(n);
-        
-        window = H( (max(1, i - range) : min(i + range, length(H(:,1)))) , (max(1, j - range) : min(j + range, length(H(1,:)))) );
-        [r2,~] = find(window > H(i,j));
-        
-        if not(isempty(r2))
-            lst = [lst n];
-        end    
+    %[r,c] = find(H > threshold);
+    r = [];
+    c = [];
+    y_max = size(H,1);
+    x_max = size(H,2);
+    need_to_dominate = window_size^2 - 1; 
+    if mod(window_size,2) == 1
+        window_step = (window_size - 1) / 2;
+        for y = 1:y_max
+            for x = 1:x_max
+                check_value = H(y,x);
+                top_left_y = y - window_step;
+                top_left_x = x - window_step;
+                y_window_range = top_left_y + window_size - 1;
+                x_window_range = top_left_x + window_size - 1;
+                
+                top_left_y = max(top_left_y,1);
+                top_left_x = max(top_left_x,1);
+                y_window_range = min(y_window_range,y_max); 
+                x_window_range = min(x_window_range,x_max);
+                
+                neighbourhood = H(top_left_y:y_window_range, top_left_x:x_window_range);
+                amount = sum(sum(neighbourhood >= check_value));
+                if amount == 1 && check_value > threshold
+                    r = [r y];
+                    c = [c x];
+                end
+            end
+        end
     end
     
-    r = zeros(length(lst),1);
-    c = zeros(length(lst),1);
-    
-    for i = 1: length(lst)
-        r(i) = r1(lst(i));
-        c(i) = c1(lst(i));
-    end
-    
-    
-    figure(7),imshow(original);
+    figure(8),imshow(original);
     
     %axis on
     hold on
-   
     %Plot all
-    figure(8), plot(c,r, 'o', 'MarkerSize', 7,'LineWidth', 0.000001);
-    
-    %Plot intervals to make it less cloudy for visualization
-    %plot(c,r,'o','MarkerIndices',1:7:length(r))
-
+    plot(c,r, 'o', 'MarkerSize', 7,'LineWidth', 0.000001);
     hold off
    
     
 end
+
+
 %harris_corner_detector("./person_toy/00000001.jpg",1,9,3,0.00013);
 %[h,r,c] = harris_corner_detector("./person_toy/00000001.jpg",1,9,3,0.00001);
 %harris_corner_detector("./person_toy/00000001.jpg",1,3,3,0.00013);
+
