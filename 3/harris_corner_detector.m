@@ -9,7 +9,6 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     %kernel_size = 7;
     
     %First order Gaussian filter approximation
-
     sobel_x = double([1 0 -1; 2 0 -2; 1 0 -1]);
     sobel_y = double([1  2 1; 0 0 0; -1 -2 -1]);
 
@@ -38,7 +37,30 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     figure(5), imshow(I_x, []), title("I_x");
     figure(6), imshow(I_y, []), title("I_y");
      
-    [r,c] = find(H > threshold);
+    [r1,c1] = find(H > threshold);
+    lst = [];
+    range = floor(window_size/2);
+    
+    for n = 1 : length(r1)
+        i = r1(n);
+        j = c1(n);
+        
+        window = H( (max(1, i - range) : min(i + range, length(H(:,1)))) , (max(1, j - range) : min(j + range, length(H(1,:)))) );
+        [r2,~] = find(window > H(i,j));
+        
+        if not(isempty(r2))
+            lst = [lst n];
+        end    
+    end
+    
+    r = zeros(length(lst),1);
+    c = zeros(length(lst),1);
+    
+    for i = 1: length(lst)
+        r(i) = r1(lst(i));
+        c(i) = c1(lst(i));
+    end
+    
     
     figure(7),imshow(original);
     
@@ -46,7 +68,7 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     hold on
    
     %Plot all
-    plot(c,r, 'o', 'MarkerSize', 7,'LineWidth', 0.000001);
+    figure(8), plot(c,r, 'o', 'MarkerSize', 7,'LineWidth', 0.000001);
     
     %Plot intervals to make it less cloudy for visualization
     %plot(c,r,'o','MarkerIndices',1:7:length(r))
