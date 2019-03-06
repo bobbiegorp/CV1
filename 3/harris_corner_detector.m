@@ -2,11 +2,8 @@
 
 function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,threshold)
 
-    original = imread(img);
-    img = im2double(rgb2gray(imread(img)));
-   
-    %sigma = 1;
-    %kernel_size = 7;
+    original = img;
+    img = im2double(rgb2gray(img));
     
     %First order Gaussian filter approximation
 
@@ -31,19 +28,22 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     %Cornerness H, or response of each pixel of the detector R in slides
     H = (A .* C - B.^2 ) - 0.04 * (A + C).^2;
     
-    figure(1), imshow(A,[]), title("A");
-    figure(2), imshow(B, []), title("B");
-    figure(3), imshow(C, []), title("C");
-    figure(4), imshow(H, []), title("H");
-    figure(5), imshow(I_x, []), title("I_x");
-    figure(6), imshow(I_y, []), title("I_y");
+    %figure(1), imshow(A,[]), title("A");
+    %figure(2), imshow(B, []), title("B");
+    %figure(3), imshow(C, []), title("C");
+    %figure(4), imshow(H, []), title("H");
+    figure(5), imshow(I_x, []), title("Image derivative: Ix");
+    figure(6), imshow(I_y, []), title("Image derivative: Iy");
+    %imwrite (mat2gray(I_x), "./Images/pingpong_00001_I_x.png");
+    %imwrite (mat2gray(I_y), "./Images/pingpong_00001_I_y.png");
      
     %[r,c] = find(H > threshold);
     r = [];
     c = [];
     y_max = size(H,1);
     x_max = size(H,2);
-    need_to_dominate = window_size^2 - 1; 
+
+     % Has a center pixel
     if mod(window_size,2) == 1
         window_step = (window_size - 1) / 2;
         for y = 1:y_max
@@ -69,19 +69,15 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
         end
     end
     
-    figure(8),imshow(original);
+    %figure(7),imshow(original),title("Corner points on original image","FontSize",17);
     
     %axis on
-    hold on
+    %hold on;
     %Plot all
-    plot(c,r, 'o', 'MarkerSize', 7,'LineWidth', 0.000001);
-    hold off
+    %plot(c,r, 'o', 'MarkerSize', 7,'LineWidth', 0.000001);
+    %hold off;
    
     
 end
 
-
-%harris_corner_detector("./person_toy/00000001.jpg",1,9,3,0.00013);
-%[h,r,c] = harris_corner_detector("./person_toy/00000001.jpg",1,9,3,0.00001);
-%harris_corner_detector("./person_toy/00000001.jpg",1,3,3,0.00013);
 
