@@ -6,10 +6,12 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     img = im2double(rgb2gray(img));
     
     %First order Gaussian filter approximation
-
     sobel_x = double([1 0 -1; 2 0 -2; 1 0 -1]);
     sobel_y = double([1  2 1; 0 0 0; -1 -2 -1]);
-
+    
+    %G = gauss2D(sigma,kernel_size);
+    %[sobel_x,sobel_y] = gradient(G);
+    
     %Calculate convolution with First order Gaussian 
     I_x = conv2(sobel_x,img);
     I_y = conv2(sobel_y,img);
@@ -25,17 +27,17 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     I_x_y = I_x .* I_y;
     B = conv2(I_x_y,G);
     
-    %Cornerness H, or response of each pixel of the detector R in slides
+    %Cornerness H, response of each pixel of the detector  
     H = (A .* C - B.^2 ) - 0.04 * (A + C).^2;
     
     %figure(1), imshow(A,[]), title("A");
     %figure(2), imshow(B, []), title("B");
     %figure(3), imshow(C, []), title("C");
     %figure(4), imshow(H, []), title("H");
-    %figure(5), imshow(I_x, []), title("Image derivative: Ix");
-    %figure(6), imshow(I_y, []), title("Image derivative: Iy");
-    %imwrite (mat2gray(I_x), "toy_042_I_x.png");
-    %imwrite (mat2gray(I_y), "toy_042_I_y.png");
+    figure(5), imshow(I_x), title("Image derivative: Ix");
+    figure(6), imshow(I_y, []), title("Image derivative: Iy");
+    %imwrite (mat2gray(I_x), "pong_192_I_x.png");
+    %imwrite (mat2gray(I_y), "pong_192_I_y.png");
      
     %[r,c] = find(H > threshold);
     r = [];
@@ -68,14 +70,6 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
             end
         end
     end
-    
-    %figure(7),imshow(original),title("Corner points on original image","FontSize",17);
-    
-    %axis on
-    %hold on;
-    %Plot all
-    %plot(c,r, 'o', 'MarkerSize', 7,'LineWidth', 0.000001);
-    %hold off;
    
     
 end
