@@ -32,10 +32,10 @@ function [H,r,c] = harris_corner_detector(img,sigma,kernel_size,window_size,thre
     %figure(2), imshow(B, []), title("B");
     %figure(3), imshow(C, []), title("C");
     %figure(4), imshow(H, []), title("H");
-    figure(5), imshow(I_x, []), title("Image derivative: Ix");
-    figure(6), imshow(I_y, []), title("Image derivative: Iy");
-    %imwrite (mat2gray(I_x), "./Images/pingpong_00001_I_x.png");
-    %imwrite (mat2gray(I_y), "./Images/pingpong_00001_I_y.png");
+    %figure(5), imshow(I_x, []), title("Image derivative: Ix");
+    %figure(6), imshow(I_y, []), title("Image derivative: Iy");
+    %imwrite (mat2gray(I_x), "toy_042_I_x.png");
+    %imwrite (mat2gray(I_y), "toy_042_I_y.png");
      
     %[r,c] = find(H > threshold);
     r = [];

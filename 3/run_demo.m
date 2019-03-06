@@ -6,7 +6,7 @@ clear all
 clc
 
 angle = 0;
-threshold = 0.0001; %0.0002968
+threshold = 0.042; %0.0002968 % 0.0001
 original = imread("./person_toy/00000001.jpg");
 %original = imread("./pingpong/0000.jpeg");
 img = imrotate(original,angle);
