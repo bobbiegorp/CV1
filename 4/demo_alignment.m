@@ -14,7 +14,7 @@ clc
 image1 = imread("./boat1.pgm");
 image2 = imread("./boat2.pgm");
 
-keypoint_matching(image1, image2)
+keypoint_matching(image1, image2);
 
 
 end

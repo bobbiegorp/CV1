@@ -66,7 +66,10 @@ line_pair_indices = key_matches(:,pair_index);
 %h2 = vl_plotframe(f(:,sel)) ;
 %set(h1,'color','k','linewidth',3) ;
 %set(h2,'color','y','linewidth',2) ;
-
+orange = [0.8500, 0.3250, 0.0980];
+light_blue = [0.3010, 0.7450, 0.9330];
+colors = {'r','g','b','y','m','c','w','k',orange,light_blue};
+i = 1;
 for pair = line_pair_indices
     index_image1 = pair(1);
     index_image2 = pair(2);
@@ -80,7 +83,9 @@ for pair = line_pair_indices
     x2 = f2_info(1);
     y2 = f2_info(2); 
     
-    line([x x2],[y y2],'Color','r','LineWidth',2);
+    %line([x x2],[y y2],'Color','r','LineWidth',2);
+    line([x x2],[y y2],'Color',colors{i} ,'LineWidth',2);
+    i = i + 1;
     
     %Plot the frames of 1 and 2
     h1 = vl_plotframe(f1_info) ;
