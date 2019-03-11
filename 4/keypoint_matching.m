@@ -58,7 +58,7 @@ set(h4,'color','y','linewidth',2) ;
 % Both images next to each other with the 10 pairs, for assignment
 figure; imshow(both);
 
-% Pick 10 random matches to draw a line
+% Pick 10 random matches to draw a line for Q1.2 
 perm_matches = randperm(size(key_matches,2));
 pair_index = perm_matches(1:10);
 line_pair_indices = key_matches(:,pair_index);
@@ -70,6 +70,7 @@ orange = [0.8500, 0.3250, 0.0980];
 light_blue = [0.3010, 0.7450, 0.9330];
 colors = {'r','g','b','y','m','c','w','k',orange,light_blue};
 i = 1;
+
 for pair = line_pair_indices
     index_image1 = pair(1);
     index_image2 = pair(2);

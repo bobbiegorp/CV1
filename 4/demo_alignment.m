@@ -14,7 +14,9 @@ clc
 image1 = imread("./boat1.pgm");
 image2 = imread("./boat2.pgm");
 
-keypoint_matching(image1, image2);
+matches = keypoint_matching(image1, image2);
+
+RANSAC(image,image2,matches,5);
 
 
 end
