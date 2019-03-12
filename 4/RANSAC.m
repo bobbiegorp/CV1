@@ -94,8 +94,8 @@ for repeat = 1:n_repeat
     %}
 
     %Compute amount of inliers
-    size_x = size(original_image1,1);
-    size_y = size(original_image1,2);
+    size_x = size(original_image2,2);
+    size_y = size(original_image2,1);
     [col, row] = meshgrid(1:size_x, 1:size_y);
     inliers = 0;
     for i = 1:size(matches,2)
@@ -128,9 +128,10 @@ for repeat = 1:n_repeat
 
         %Check if transformed coordinates are within radius of coordinates of
         %pair in image 2
-        x_r = (row - y2).^2;
-        y_r = (col - x2).^2;
+        y_r = (row - y2).^2;
+        x_r = (col - x2).^2;
         combined = x_r + y_r;
+        
         [y_coordinates,x_coordinates] = find(combined <= 10.^2);
         cond1 = max(new_y == y_coordinates);
         cond2 = max(new_x == x_coordinates);
@@ -138,6 +139,7 @@ for repeat = 1:n_repeat
         if length(y_coordinates) > 1 && length(x_coordinates) > 1 && cond1 && cond2
            inliers = inliers + 1 ;
         end
+        
     end
     
     if inliers > best_inliers
@@ -145,16 +147,18 @@ for repeat = 1:n_repeat
        best_inliers = inliers;
     end
     
+    if inliers > 0
+       disp(inliers)
+    end 
+    
 end
 
-disp(inliers);
 m1 = best_parameters_x(1);
 m2 = best_parameters_x(2);
 m3 = best_parameters_x(3);
 m4 = best_parameters_x(4);
 t1 = best_parameters_x(5);
 t2 = best_parameters_x(6);
-
 
 %To plot transformed image, every pixel, no frames
 transformed_image = zeros(size(original_image1));
