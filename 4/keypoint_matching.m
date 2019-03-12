@@ -3,7 +3,6 @@
 function key_matches = keypoint_matching(original_image1, original_image2)
 
 if size(original_image1,3) == 3
-    disp("hallo")
     image1 = single(rgb2gray(original_image1));
     image2 = single(rgb2gray(original_image2));
 else
@@ -14,9 +13,10 @@ end
 [f,d] = vl_sift(image1);
 [f2,d2] = vl_sift(image2);
 [key_matches, scores] = vl_ubcmatch(d, d2) ;
-
+%{
 %For self illustration purposes image 1 
-figure; imshow(original_image1);
+figure(1); imshow(original_image1);
+hold on
 perm = randperm(size(f,2)) ;
 sel = perm(1:50) ;
 h1 = vl_plotframe(f(:,sel)) ;
@@ -25,9 +25,11 @@ set(h1,'color','k','linewidth',3) ;
 set(h2,'color','y','linewidth',2) ;
 %h3 = vl_plotsiftdescriptor(d(:,sel),f(:,sel)) ;
 %set(h3,'color','g') ;
+hold off
 
 %For self illustration purposes image 2
-figure; imshow(original_image2);
+figure(2); imshow(original_image2);
+hold on
 perm = randperm(size(f2,2)) ;
 sel2 = perm(1:50) ;
 h3 = vl_plotframe(f2(:,sel2)) ;
@@ -36,11 +38,13 @@ set(h3,'color','k','linewidth',3) ;
 set(h4,'color','y','linewidth',2) ;
 %h3 = vl_plotsiftdescriptor(d2(:,sel),f2(:,sel)) ;
 %set(h3,'color','g') ;
+hold off 
 
 
 % For self illustration purposes, Both images next to each other 
 both = cat(2,original_image1,original_image2);
-figure; imshow(both);
+figure(3); imshow(both);
+hold on
 h1 = vl_plotframe(f(:,sel)) ;
 h2 = vl_plotframe(f(:,sel)) ;
 set(h1,'color','k','linewidth',3) ;
@@ -53,10 +57,13 @@ h3 = vl_plotframe(frames_2) ;
 h4 = vl_plotframe(frames_2) ;
 set(h3,'color','k','linewidth',3) ;
 set(h4,'color','y','linewidth',2) ;
-
+hold off
+%}
 
 % Both images next to each other with the 10 pairs, for assignment
-figure; imshow(both);
+both = cat(2,original_image1,original_image2);
+figure(4); imshow(both);
+hold on
 
 % Pick 10 random matches to draw a line for Q1.2 
 perm_matches = randperm(size(key_matches,2));
@@ -100,5 +107,7 @@ for pair = line_pair_indices
     set(h2,'color','y','linewidth',2) ;
     
 end 
+
+hold off 
 
 end

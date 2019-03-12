@@ -16,7 +16,9 @@ image2 = imread("./boat2.pgm");
 
 matches = keypoint_matching(image1, image2);
 
-RANSAC(image,image2,matches,5);
+amount_matches = 10;
+n_repeat = 5;
+RANSAC(image1,image2,matches,amount_matches,5);
 
 
 end
