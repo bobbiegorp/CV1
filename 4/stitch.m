@@ -7,6 +7,7 @@ n_repeat = 5;
 [m1, m2, m3, m4, t1, t2] = RANSAC(right,left,matches,amount_matches,n_repeat);
 parameters_x = [m1; m2; m3; m4; t1; t2];
 
+%Transform the image so that the stitching is possible
 transformed_image = zeros(size(right));
 for y = 1:size(right,1)
     for x = 1: size(right,2)
@@ -51,15 +52,44 @@ figure; imshow(transformed_image,[]);
 transformed_size = [max(max(cor_1(1), cor_2(1)), max(cor_3(1), cor_4(1)))- min(min(cor_1(1), cor_2(1)), min(cor_3(1), cor_4(1))), 
     max(max(cor_1(2), cor_2(2)), max(cor_3(2), cor_4(2)))-min(min(cor_1(2), cor_2(2)), min(cor_3(2), cor_4(2)))];
 
+%Get the sift features again
+[f,d] = vl_sift(left);
+[f2,d2] = vl_sift(single(transformed_image));
+[key_matches, ~] = vl_ubcmatch(d, d2);
+
+offset_y = zeros(size(key_matches, 2), 1);
+offset_x = zeros(size(key_matches, 2), 1);
+
+%For each match, find the offset of their coordinates in the images
+for i = 1:size(key_matches, 2)
+   l = key_matches(1, i);
+   r = key_matches(2, i);
+   offset_y(i) = round(f(1,l) - f2(1,r));
+   offset_x(i) = round(f(2,l) - f2(2,r));
+end
+
+%Find the most common offset of the matched sift features
+most_common_offset_y = mode(offset_y);
+most_common_offset_x = mode(offset_x);
+
 %Create matrix of necessary size
-%Not correct yet, size(stitched_image, 2) is not the sum of both images
-%becuase they overlap
-stitched_image = zeros(max(size(left, 1), transformed_size(1)), size(left, 2) + transformed_size(2));
+stitched_image = zeros(max(size(left, 1), transformed_size(1)), max(size(left, 2), transformed_size(2) + most_common_offset_x));
+
 
 if size(stitched_image, 1) == size(left, 1)
+    %Place left image on the left
     for y = 1:size(left, 1)
         for x = 1:size(left, 2)
             stitched_image(y,x) = left(y,x);
+        end
+    end
+    %Place transformed right image with the most common offset of matching
+    %sift features
+    for y = 1:size(transformed_image, 1)
+        for x = 1:size(transformed_image, 2)
+            if transformed_image(y,x) ~= 0
+               stitched_image(y+most_common_offset_y,x+most_common_offset_x) = transformed_image(y,x); 
+            end
         end
     end
 end
