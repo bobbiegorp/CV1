@@ -3,7 +3,7 @@ function stitched_image = stitch(left, right)
 matches = keypoint_matching(right, left);
 
 amount_matches = 10;
-n_repeat = 5;
+n_repeat = 20;
 [m1, m2, m3, m4, t1, t2] = RANSAC(right,left,matches,amount_matches,n_repeat);
 parameters_x = [m1; m2; m3; m4; t1; t2];
 
