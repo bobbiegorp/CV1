@@ -13,6 +13,7 @@ end
 [f,d] = vl_sift(image1);
 [f2,d2] = vl_sift(image2);
 [key_matches, scores] = vl_ubcmatch(d, d2) ;
+
 %{
 %For self illustration purposes image 1 
 figure(1); imshow(original_image1);
