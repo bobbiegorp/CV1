@@ -9,6 +9,11 @@ clc
 left = imread("./left.jpg");
 right = imread("./right.jpg");
 
+%%%% temp transform to gray, later color should be possible as well
+left = single(rgb2gray(left));
+right = single(rgb2gray(right));
+%%%%
+
 stitched_image = stitch(left, right);
 figure; imshow(stitched_image,[]);
 
