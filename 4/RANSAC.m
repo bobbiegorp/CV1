@@ -106,10 +106,10 @@ t2 = best_parameters_x(6);
 disp(best_parameters_x);
 
 %To create transformed image of image 1 using best parameters found, every pixel to transform
-transformed_image = zeros(size(original_image1));
-for y = 1:size(original_image1,1)
-    for x = 1: size(original_image1,2)
-        value = original_image1(y,x);
+transformed_image = zeros(size(image1));
+for y = 1:size(image1,1)
+    for x = 1: size(image1,2)
+        value = image1(y,x);
         A_pixel = [x,y, 0,0,1,0;0,0,x,y,0,1];
         b_pixel = A_pixel * best_parameters_x;
         new_x = round(b_pixel(1));

@@ -62,53 +62,55 @@ hold off
 %}
 
 % Both images next to each other with the 10 pairs, for assignment
-both = cat(2,original_image1,original_image2);
-figure(4); imshow(both);
-hold on
+if size(original_image1) == size(original_image2)
+    both = cat(2,original_image1,original_image2);
+    figure(4); imshow(both);
+    hold on
 
-% Pick 10 random matches to draw a line for Q1.2 
-perm_matches = randperm(size(key_matches,2));
-pair_index = perm_matches(1:10);
-line_pair_indices = key_matches(:,pair_index);
-%h1 = vl_plotframe(f(:,sel)) ;
-%h2 = vl_plotframe(f(:,sel)) ;
-%set(h1,'color','k','linewidth',3) ;
-%set(h2,'color','y','linewidth',2) ;
-orange = [0.8500, 0.3250, 0.0980];
-light_blue = [0.3010, 0.7450, 0.9330];
-colors = {'r','g','b','y','m','c','w','k',orange,light_blue};
-i = 1;
+    % Pick 10 random matches to draw a line for Q1.2 
+    perm_matches = randperm(size(key_matches,2));
+    pair_index = perm_matches(1:10);
+    line_pair_indices = key_matches(:,pair_index);
+    %h1 = vl_plotframe(f(:,sel)) ;
+    %h2 = vl_plotframe(f(:,sel)) ;
+    %set(h1,'color','k','linewidth',3) ;
+    %set(h2,'color','y','linewidth',2) ;
+    orange = [0.8500, 0.3250, 0.0980];
+    light_blue = [0.3010, 0.7450, 0.9330];
+    colors = {'r','g','b','y','m','c','w','k',orange,light_blue};
+    i = 1;
 
-for pair = line_pair_indices
-    index_image1 = pair(1);
-    index_image2 = pair(2);
+    for pair = line_pair_indices
+        index_image1 = pair(1);
+        index_image2 = pair(2);
 
-    f1_info = f(:,index_image1);
-    x = f1_info(1);
-    y = f1_info(2);
+        f1_info = f(:,index_image1);
+        x = f1_info(1);
+        y = f1_info(2);
 
-    f2_info =  f2(:,index_image2);
-    f2_info(1) = f2_info(1) + size(image1,2);
-    x2 = f2_info(1);
-    y2 = f2_info(2); 
-    
-    %line([x x2],[y y2],'Color','r','LineWidth',2);
-    line([x x2],[y y2],'Color',colors{i} ,'LineWidth',2);
-    i = i + 1;
-    
-    %Plot the frames of 1 and 2
-    h1 = vl_plotframe(f1_info) ;
-    h2 = vl_plotframe(f1_info) ;
-    set(h1,'color','k','linewidth',3) ;
-    set(h2,'color','y','linewidth',2) ;
-    
-    h1 = vl_plotframe(f2_info) ;
-    h2 = vl_plotframe(f2_info) ;
-    set(h1,'color','k','linewidth',3) ;
-    set(h2,'color','y','linewidth',2) ;
-    
-end 
+        f2_info =  f2(:,index_image2);
+        f2_info(1) = f2_info(1) + size(image1,2);
+        x2 = f2_info(1);
+        y2 = f2_info(2); 
 
-hold off 
+        %line([x x2],[y y2],'Color','r','LineWidth',2);
+        line([x x2],[y y2],'Color',colors{i} ,'LineWidth',2);
+        i = i + 1;
+
+        %Plot the frames of 1 and 2
+        h1 = vl_plotframe(f1_info) ;
+        h2 = vl_plotframe(f1_info) ;
+        set(h1,'color','k','linewidth',3) ;
+        set(h2,'color','y','linewidth',2) ;
+
+        h1 = vl_plotframe(f2_info) ;
+        h2 = vl_plotframe(f2_info) ;
+        set(h1,'color','k','linewidth',3) ;
+        set(h2,'color','y','linewidth',2) ;
+
+    end 
+
+    hold off 
+end
 
 end
