@@ -7,14 +7,6 @@ run("/home/marvin/Documenten/Master_AI_leerjaar_1/Computer vision 1/vlfeat-0.9.2
 %Setting seed
 rng(1);
 
-%You can use VLFeat functions for dense SIFT (e.g. vl dsift) 
-%and key points SIFT descriptor extraction (e.g. vl sift).
-%Moreover, it is expected that you implement not only for grayscale SIFT, 
-%but also for RGB-SIFT and opponent-SIFT.
-
-%For color 2 approaches?
-%Turn graysacle, to find keypoints.
-
 train= load("train");
 class_names = train.class_names;
 x_train = train.X;
@@ -24,14 +16,26 @@ test = load("test");
 x_test = test.X;
 y_test = test.y;
 
-color_space = 1; %1 is gray, 2 is RGB, 3 is opponent
-sift_method = 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ; %1 is keypoints, 2 is dense sampling
+color_space = 3; %1 is gray, 2 is RGB, 3 is opponent
+sift_method = 1;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ; %1 is keypoints, 2 is dense sampling
 
 total_classes = length(class_names);
 total_training = size(x_train,1);
 total_test = size(y_test,1);
 
 disp(class_names);
+%{
+im_data = x_train(1,:);
+size_x = 96;
+size_y = 96;
+channel_1 = reshape( im_data(1:size_x*size_y),size_y,size_x);
+channel_2 = reshape( im_data(size_x*size_y+1:size_x*size_y*2),size_y,size_x);
+channel_3 = reshape( im_data(size_x*size_y*2+1:end),size_y,size_x);
+image = cat(3,cat(3,channel_1,channel_2),channel_3);
+[f,d] = vl_dsift(im2single(rgb2gray(image)),'step',10);
+[f2,d2] = vl_sift(im2single(rgb2gray(image)));
+keyboard
+%}
 
 %Sort all data so can take subsets of data for each class
 %classes = ["airplane","bird", "ship", "horse","car"];
@@ -60,6 +64,7 @@ for index = 1:total_training
         sorted_train_data(class_index) = [sorted_train_data(class_index); im_data];
     end
 end
+disp("Done sorting data for training set")
 
 for index = 1:total_test
     im_data = x_test(index,:);
@@ -68,7 +73,7 @@ for index = 1:total_test
         sorted_test_data(class_index) = [sorted_test_data(class_index); im_data];
     end
 end
-
+disp("Done sorting data for test set")
 
 %Take subset of each class of training, extract descriptor for clustering visual words
 cluster_data = [];
@@ -86,11 +91,12 @@ end
 
 amount_clusters = 400;
 [partition,centroids] = kmeans(double(cluster_data),amount_clusters);
+disp("Done clustering for visual vocabulary")
 
 %Train
 %Create histogram for remaining training images of all classes
 amount_to_train = 500 - amount_for_v; %Rest of images not used for clustering
-%amount_to_Train = 100;
+%amount_to_train = 100;
 train_end = amount_for_v + amount_to_train;
 
 if train_end > size(class_im_data,1)
@@ -98,42 +104,24 @@ if train_end > size(class_im_data,1)
 end
 
 histogram_train_data = histogram_quantization(sorted_train_data,amount_for_v+1,train_end,amount_clusters,centroids,classes,color_space,sift_method);
+disp("Done with training data quantization")
 
 %Test
 %Create histogram for remaining testing images of all classes
 amount_to_test = 800;
 histogram_test_data = histogram_quantization(sorted_test_data,1,amount_to_test,amount_clusters,centroids,classes,color_space,sift_method);
-
+disp("Done with test data quantization")
 
 %Combining trainigmg data for training
 target_class_index = 1;
 [training_matrix,training_labels] = combine_data(histogram_train_data,amount_to_train,classes,target_class_index,amount_clusters);
-
-%{
-histogram_class1 = histogram_train_data(1);
-amount_instances = size(histogram_class1,1);
-
-training_labels = zeros(5*amount_instances,1);
-training_labels(1:amount_instances,1) = 1;
-
-training_matrix = zeros(5*amount_instances,amount_clusters);
-training_matrix(1:amount_instances,:) = histogram_class1;
-
-histogram_class2 = histogram_train_data(2);
-histogram_class3 = histogram_train_data(3);
-histogram_class7 = histogram_train_data(7);
-histogram_class9 = histogram_train_data(9);
-
-training_matrix(amount_instances+1:2*amount_instances,:) = histogram_class2;
-training_matrix(2*amount_instances+1:3*amount_instances,:) = histogram_class3;
-training_matrix(3*amount_instances+1:4*amount_instances,:) = histogram_class7;
-training_matrix(4*amount_instances+1:5*amount_instances,:) = histogram_class9;
-%}
+disp("Done combining training data for training SVM")
 
 %model1 = svmtrain(training_labels, training_matrix,[ 'libsvm_options']);
 model1 = fitcsvm(training_matrix,training_labels,'KernelFunction','rbf');
-CompactSVMModel = compact(model1);
-ScoreSVMModel = fitPosterior(CompactSVMModel,training_matrix,training_labels);
+compact_svm = compact(model1);
+svm_model = fitPosterior(compact_svm,training_matrix,training_labels);
+disp("Done training SVM")
 %Predicts only negative due to class imbalance. For dense RGB SIFT should
 %work better than random guess (MAP of 0.2) as stated on piazza
 %Or use less data perhaps. 
@@ -156,6 +144,7 @@ disp(sum(label3));
 
 %Testing on test data
 [test_matrix,test_labels] = combine_data(histogram_test_data,amount_to_test,classes,target_class_index,amount_clusters);
+disp("Done combining test data for testing")
 %{
 histogram_class1 = histogram_test_data(1);
 histogram_class2 = histogram_test_data(2);
@@ -176,19 +165,25 @@ test_matrix(3*amount_instances+1:4*amount_instances,:) = histogram_class7;
 test_matrix(4*amount_instances+1:5*amount_instances,:) = histogram_class9;
 %}
 
-[predict1,class_prob1] = predict(model1,test_matrix);
-[predict2,class_prob2] = predict(ScoreSVMModel,test_matrix);
-disp(sum(predict1));
+%[predict1,class_prob1] = predict(model1,test_matrix);
+[predict2,class_prob2] = predict(svm_model,test_matrix);
+%disp(sum(predict1));
 disp(sum(predict2));
 
 [test_acc,map_score,ranked_prob,ranked_indices_test] = computeResults(class_prob2,test_labels,predict2);
+disp("Done with predictions, computing score")
 disp(test_acc);
 disp(map_score);
+
+%Display top 5 confidence probabiltiies
 classes_of_display = display_images(1,ranked_indices_test,predict2,sorted_test_data,amount_to_test,classes,class_names);
 disp(classes_of_display);
 
+%Display 5 worst confidence probabilities
 classes_of_display = display_images(0,ranked_indices_test,predict2,sorted_test_data,amount_to_test,classes,class_names);
 disp(classes_of_display);
+
+%Make function such that 5 images are in subplot (tight layout) and is saved or concat with each other? 
 
 keyboard
 end 
@@ -207,15 +202,84 @@ function [f,d] =  Get_SIFTData(im_data,color_space,sift_method)
         switch color_space
             %gray
             case 1 %gray
-                [f,d] = vl_sift(im2single(rgb2gray(image))); %128 by x keypoints, take tranpose for stack  
+                [f,d] = vl_sift(im2single(rgb2gray(image))); 
+            case 2 
+                [f,d_full] = vl_sift(im2single(rgb2gray(image))); %Find generic keypoints first
+                %Manier 1
+                [f1,d1] = vl_sift(im2single(channel_1),'frames',f); %Channel 1
+                [f2,d2] = vl_sift(im2single(channel_2),'frames',f); %Channel 1
+                [f3,d3] = vl_sift(im2single(channel_3),'frames',f); %Channel 1
+                %}
                 
+                %Manier 2 met gradients?
+                %{
+                I_       = vl_imsmooth(im2double(channel_1), sqrt(f(3)^2 - 0.5^2)) ;
+                [Ix, Iy] = vl_grad(I_) ;
+                mod      = sqrt(Ix.^2 + Iy.^2) ;
+                ang      = atan2(Iy,Ix) ;
+                grd      = shiftdim(cat(3,mod,ang),2) ;
+                grd      = single(grd) ;
+                d1        = vl_siftdescriptor(grd, f) ;
+                
+                I_       = vl_imsmooth(im2double(channel_2), sqrt(f(3)^2 - 0.5^2)) ;
+                [Ix, Iy] = vl_grad(I_) ;
+                mod      = sqrt(Ix.^2 + Iy.^2) ;
+                ang      = atan2(Iy,Ix) ;
+                grd      = shiftdim(cat(3,mod,ang),2) ;
+                grd      = single(grd) ;
+                d2        = vl_siftdescriptor(grd, f) ;
+                
+                I_       = vl_imsmooth(im2double(channel_3), sqrt(f(3)^2 - 0.5^2)) ;
+                [Ix, Iy] = vl_grad(I_) ;
+                mod      = sqrt(Ix.^2 + Iy.^2) ;
+                ang      = atan2(Iy,Ix) ;
+                grd      = shiftdim(cat(3,mod,ang),2) ;
+                grd      = single(grd) ;
+                d3       = vl_siftdescriptor(grd, f) ;
+                %}
+                %}
+                
+                d = cat(2,cat(2,d1,d2),d3);
+            case 3
+                
+                [f,d_full] = vl_sift(im2single(rgb2gray(image))); %Find generic keypoints first
+                
+                %Transform to opponent space
+                opponent_channel_1 = (channel_1 - channel_2)./sqrt(2);
+                opponent_channel_2 = (channel_1 + channel_2 - 2*channel_3)./sqrt(6);
+                opponent_channel_3 = (channel_1 + channel_2 + channel_3)./sqrt(3);
+
+                [f1,d1] = vl_sift(im2single(opponent_channel_1),'frames',f); %Channel 1
+                [f2,d2] = vl_sift(im2single(opponent_channel_2),'frames',f); %Channel 1
+                [f3,d3] = vl_sift(im2single(opponent_channel_3),'frames',f); %Channel 1
+                
+                d = cat(2,cat(2,d1,d2),d3);
+
         end
         
     else  %Dense sampling
         switch color_space
             %gray
             case 1
-                [f,d] = vl_dsift(im2single(rgb2gray(image))); %128 by x keypoints, take tranpose for stack  
+                binSize = 8 ;
+                magnif = 3 ;
+                Is = vl_imsmooth(im2single(rgb2gray(image)), sqrt((binSize/magnif)^2 - .25)) ;
+                [f,d] = vl_dsift(Is,'step',10,'size', binSize); 
+                %[f,d] = vl_dsift(im2single(rgb2gray(image)),'step',10); %originele manier
+            case 2
+                binSize = 3 ;
+                magnif = 3 ;
+                Is = vl_imsmooth(im2single(rgb2gray(image)), sqrt((binSize/magnif)^2 - .25)) ;
+                [f,d] = vl_dsift(Is,'step',10,'size', binSize); 
+                f(3,:) = binSize/magnif ;
+                f(4,:) = 0 ;
+                
+                [f1, d1] = vl_sift(im2single(channel_1), 'frames', f) ;
+                [f2, d2] = vl_sift(im2single(channel_2), 'frames', f) ;
+                [f3, d3] = vl_sift(im2single(channel_3), 'frames', f) ;
+                d = cat(2,cat(2,d1,d2),d3);   
+            %case 3
+                
                 
         end
     end
