@@ -9,7 +9,7 @@ total_test = size(y_test,1);
 disp(class_names);
 
 %Sort all data so can take subsets of data for each class
-%classes = ["airplane","bird", "ship", "horse","car"];
+%classes = ["airplane","bird", "car", "ship", "horse"];
 classes = [1,2,3,7,9];
 sorted_train_data = containers.Map('KeyType','single' ,'ValueType','any');
 sorted_test_data = containers.Map('KeyType','single' ,'ValueType','any');
@@ -135,7 +135,7 @@ disp(classes_of_display);
 combined = stack_images(top5,worse5);
 imwrite(combined ,class_names(target_class_index) + "_combined_" + properties_name);
 
-keyboard
+%keyboard
 end 
 
 function [f,d] =  Get_SIFTData(im_data,color_space,sift_method)
@@ -155,39 +155,9 @@ function [f,d] =  Get_SIFTData(im_data,color_space,sift_method)
                 [f,d] = vl_sift(im2single(rgb2gray(image))); 
             case 2 
                 [f,d_full] = vl_sift(im2single(rgb2gray(image))); %Find generic keypoints first
-                %Manier 1
                 [f1,d1] = vl_sift(im2single(channel_1),'frames',f); %Channel 1
                 [f2,d2] = vl_sift(im2single(channel_2),'frames',f); %Channel 1
                 [f3,d3] = vl_sift(im2single(channel_3),'frames',f); %Channel 1
-                %}
-                
-                %Manier 2 met gradients?
-                %{
-                I_       = vl_imsmooth(im2double(channel_1), sqrt(f(3)^2 - 0.5^2)) ;
-                [Ix, Iy] = vl_grad(I_) ;
-                mod      = sqrt(Ix.^2 + Iy.^2) ;
-                ang      = atan2(Iy,Ix) ;
-                grd      = shiftdim(cat(3,mod,ang),2) ;
-                grd      = single(grd) ;
-                d1        = vl_siftdescriptor(grd, f) ;
-                
-                I_       = vl_imsmooth(im2double(channel_2), sqrt(f(3)^2 - 0.5^2)) ;
-                [Ix, Iy] = vl_grad(I_) ;
-                mod      = sqrt(Ix.^2 + Iy.^2) ;
-                ang      = atan2(Iy,Ix) ;
-                grd      = shiftdim(cat(3,mod,ang),2) ;
-                grd      = single(grd) ;
-                d2        = vl_siftdescriptor(grd, f) ;
-                
-                I_       = vl_imsmooth(im2double(channel_3), sqrt(f(3)^2 - 0.5^2)) ;
-                [Ix, Iy] = vl_grad(I_) ;
-                mod      = sqrt(Ix.^2 + Iy.^2) ;
-                ang      = atan2(Iy,Ix) ;
-                grd      = shiftdim(cat(3,mod,ang),2) ;
-                grd      = single(grd) ;
-                d3       = vl_siftdescriptor(grd, f) ;
-                %}
-                %}
                 
                 d = cat(2,cat(2,d1,d2),d3);
             case 3
@@ -267,26 +237,6 @@ function normalized_histogram = ComputeHistogram(im_data,centroids,amount_cluste
         
         %Normalize histograms
         normalized_histogram = histogram/histogram_sum;
-        
-        %Store the histogram of image
-        %histogram_class(im_data_index,:) = normalized_histogram;
-        
-        %Use pairwise Euclidecian distance search
-        %{
-        for descriptor = d
-            stack = [descriptor';centroids];
-            distances = pdist(double(stack),'euclidean');
-            [~,min_index] = min(distances(1:amount_clusters));
-            histogram(1,min_index) = histogram(1,min_index) + 1;
-            histogram_total(1,min_index) = histogram_total(1,min_index) + 1;
-            counter = counter + 1;
-        end
-        %}
-        
-        %Use one on one comparison and than min
-        %for descriptor = d
-        %   norm(descriptor) 
-        %end
 
 end
 
@@ -438,5 +388,5 @@ function full = stack_images(top5,worse5)
     dim2 = cat(1,dim2,worse5(:,:,2));
     dim3 = cat(1,dim3,worse5(:,:,3));
     full = cat(3,cat(3,dim1,dim2),dim3);
-    imshow(full);
+    figure; imshow(full);
 end
