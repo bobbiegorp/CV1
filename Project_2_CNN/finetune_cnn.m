@@ -19,7 +19,7 @@ opts.train = struct() ;
 opts = vl_argparse(opts, varargin) ;
 if ~isfield(opts.train, 'gpus'), opts.train.gpus = []; end;
 
-opts.train.gpus = [0];
+opts.train.gpus = [];
 
 
 
@@ -145,9 +145,9 @@ end
 
 % Initialize variables
 total_size = train_size + test_size;
-im_data = zeros(32, 32, 3, total_size);
-labels = zeros(total_size, 1);
-sets = zeros(total_size, 1);
+im_data = zeros(32, 32, 3, total_size, 'single');
+labels = zeros(1, total_size);
+sets = zeros(1, total_size);
 im_size = 96;
 
 % Loop over the images that we picked above
@@ -167,8 +167,8 @@ for i = 1:train_size
     
     % Assign values to the data, labels and sets according to the current image
     im_data(:,:,:,i) = I(:,:,:);
-    labels(i) = y_train(j);
-    sets(i) = 1;
+    labels(1, i) = y_train(j);
+    sets(1, i) = 1;
 end
 
 for i = 1:test_size
@@ -188,8 +188,8 @@ for i = 1:test_size
     
     % Assign values to the data, labels and sets according to the current image
     im_data(:,:,:,k) = I(:,:,:);
-    labels(k) = y_test(j);
-    sets(k) = 2;
+    labels(1, k) = y_test(j);
+    sets(1, k) = 2;
 end
 
 %%% end our code
