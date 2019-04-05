@@ -112,7 +112,7 @@ for i = 1:size(x_train, 1)
         y_train(i) = 3;
     elseif y_train(i) == 7
         y_train(i) = 4;
-    elseif y_train(i) == 10
+    elseif y_train(i) == 3
         y_train(i) = 5;
     else
         train_size = train_size - 1;
@@ -146,8 +146,8 @@ end
 % Initialize variables
 total_size = train_size + test_size;
 im_data = zeros(32, 32, 3, total_size, 'single');
-labels = zeros(1, total_size);
-sets = zeros(1, total_size);
+labels = zeros(1, total_size, 'single');
+sets = zeros(1, total_size, 'single');
 im_size = 96;
 
 % Loop over the images that we picked above
