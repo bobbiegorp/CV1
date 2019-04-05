@@ -9,7 +9,7 @@ total_test = size(y_test,1);
 disp(class_names);
 
 %Sort all data so can take subsets of data for each class
-%classes = ["airplane","bird", "car", "ship", "horse"];
+%classes = ["airplane","bird", "car", "horse","ship", ]
 classes = [1,2,3,7,9];
 sorted_train_data = containers.Map('KeyType','single' ,'ValueType','any');
 sorted_test_data = containers.Map('KeyType','single' ,'ValueType','any');
@@ -59,7 +59,6 @@ for class_index = classes
     end
 end 
 
-%amount_clusters = 400;
 [partition,centroids] = kmeans(double(cluster_data),amount_clusters);
 disp("Done clustering for visual vocabulary")
 
@@ -81,28 +80,30 @@ disp("Done with training data quantization")
 histogram_test_data = histogram_quantization(sorted_test_data,1,amount_to_test,amount_clusters,centroids,classes,color_space,sift_method);
 disp("Done with test data quantization")
 
-%Combining training data for training
-%target_class_index = 1;
+%Combining training data for training, labeled with a 1 for the target
+%class
 [training_matrix,training_labels] = combine_data(histogram_train_data,amount_to_train,classes,target_class_index,amount_clusters);
 disp("Done combining training data for training SVM")
 
 %model1 = svmtrain(training_labels, training_matrix,[ 'libsvm_options']);
+%Train SVM model and turn score into class probabilities
 model1 = fitcsvm(training_matrix,training_labels,'KernelFunction','rbf');
 compact_svm = compact(model1);
 svm_model = fitPosterior(compact_svm,training_matrix,training_labels);
 disp("Done training SVM")
 
-%Testing on test data
+%Testing on test data, after combining into matrix and labels
 [test_matrix,test_labels] = combine_data(histogram_test_data,amount_to_test,classes,target_class_index,amount_clusters);
 disp("Done combining test data for testing")
 
+%Predict 
 [predict2,class_prob2] = predict(svm_model,test_matrix);
 disp(sum(predict2));
 
 [test_acc,map_score,ranked_prob,ranked_indices_test] = computeResults(class_prob2,test_labels,predict2);
 disp("Done with predictions, computing score")
-disp(test_acc);
-disp(map_score);
+disp("Accuracy: " + test_acc);
+disp("mAP Score: " + map_score);
 
 %Display top and worst 5 confidence probabiltiies, name of file
 if sift_method == 1
@@ -132,8 +133,9 @@ disp(classes_of_display);
 [classes_of_display,worse5] = display_images(0,ranked_indices_test,predict2,sorted_test_data,amount_to_test,classes,class_names,target_class_index,properties_name);
 disp(classes_of_display);
 
+%Display top5 at top and worse5 below it in 1 iamge
 combined = stack_images(top5,worse5);
-imwrite(combined ,class_names(target_class_index) + "_combined_" + properties_name);
+%imwrite(combined ,class_names(target_class_index) + "_combined_" + properties_name);
 
 %keyboard
 end 
@@ -372,7 +374,7 @@ function [classes_of_display,full] = display_images(top_or_bottom_5,ranked_indic
     end
     full = cat(3,cat(3,dim1,dim2),dim3);
     imshow(full);
-    imwrite(full,class_names(target_class_index) + title_string + p_name);
+    %imwrite(full,class_names(target_class_index) + title_string + p_name);
 
 end
 
